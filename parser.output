@@ -1,0 +1,948 @@
+
+
+-------- Grammar --------
+
+rule 1 target: Expr
+rule 2 target: 
+rule 3 target: LET IDENT EQ Expr
+rule 4 target: FIX IDENT EQ FUN IDENT ARROW Expr
+rule 5 Expr: IfExpr
+rule 6 Expr: RelExpr
+rule 7 Expr: LetExpr
+rule 8 Expr: FunExpr
+rule 9 Expr: FixExpr
+rule 10 FixExpr: FIX IDENT EQ FUN IDENT ARROW Expr IN Expr
+rule 11 LetExpr: LET IDENT EQ Expr IN Expr
+rule 12 FunExpr: FUN IDENT ARROW Expr
+rule 13 RelExpr: ASExpr LT ASExpr
+rule 14 RelExpr: ASExpr GT ASExpr
+rule 15 RelExpr: ASExpr
+rule 16 ASExpr: ASExpr PLUS MDExpr
+rule 17 ASExpr: ASExpr MINUS MDExpr
+rule 18 ASExpr: MDExpr
+rule 19 MDExpr: MDExpr MULT AppExpr
+rule 20 MDExpr: MDExpr DIV AppExpr
+rule 21 MDExpr: AppExpr
+rule 22 AppExpr: AppExpr AExpr
+rule 23 AppExpr: AExpr
+rule 24 IfExpr: IF Expr THEN Expr ELSE Expr
+rule 25 AExpr: LPAREN Expr RPAREN
+rule 26 AExpr: NUMBER
+rule 27 AExpr: boolean
+rule 28 AExpr: IDENT
+rule 29 boolean: TRUE
+rule 30 boolean: FALSE
+
+------- Symbols -------
+
+**Nonterminals, with rules where they appear
+
+  $start (29)
+    on right: 
+    on left : 
+  target (30)
+    on right: 
+    on left : 1 2 3 4
+  Expr (31)
+    on right: 1 3 4 10 11 12 24 25
+    on left : 5 6 7 8 9
+  IfExpr (32)
+    on right: 5
+    on left : 24
+  RelExpr (33)
+    on right: 6
+    on left : 13 14 15
+  LetExpr (34)
+    on right: 7
+    on left : 11
+  FunExpr (35)
+    on right: 8
+    on left : 12
+  FixExpr (36)
+    on right: 9
+    on left : 10
+  ASExpr (37)
+    on right: 13 14 15 16 17
+    on left : 16 17 18
+  MDExpr (38)
+    on right: 16 17 18 19 20
+    on left : 19 20 21
+  AppExpr (39)
+    on right: 19 20 21 22
+    on left : 22 23
+  AExpr (40)
+    on right: 22 23
+    on left : 25 26 27 28
+  boolean (41)
+    on right: 27
+    on left : 29 30
+
+**Terminals, with rules where they appear
+
+  $end (0) 
+  error (1) 
+  "->" (2) 
+  "^" (3) 
+  "*" (4) 
+  "/" (5) 
+  "+" (6) 
+  "-" (7) 
+  LET (8) 3 11
+  IDENT (9) 3 4 10 11 12 28
+  EQ (10) 3 4 10 11
+  FIX (11) 4 10
+  FUN (12) 4 10 12
+  ARROW (13) 4 10 12
+  IN (14) 10 11
+  LT (15) 13
+  GT (16) 14
+  PLUS (17) 16
+  MINUS (18) 17
+  MULT (19) 19
+  DIV (20) 20
+  IF (21) 24
+  THEN (22) 24
+  ELSE (23) 24
+  LPAREN (24) 25
+  RPAREN (25) 25
+  NUMBER (26) 26
+  TRUE (27) 29
+  FALSE (28) 30
+
+--------- State ---------
+
+state 0
+
+
+  LET           shift, and go to state 3
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 4
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+  $default      reduce using rule 2 (target)
+
+  target        go to state 1
+  Expr          go to state 2
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 1
+
+
+  $end          shift, and go to state 22
+
+
+state 2
+
+   1) target : Expr _
+
+  $default      reduce using rule 1 (target)
+
+
+state 3
+
+   3) target : LET _ IDENT EQ Expr
+  11) LetExpr : LET _ IDENT EQ Expr IN Expr
+
+  IDENT         shift, and go to state 23
+
+
+state 4
+
+   4) target : FIX _ IDENT EQ FUN IDENT ARROW Expr
+  10) FixExpr : FIX _ IDENT EQ FUN IDENT ARROW Expr IN Expr
+
+  IDENT         shift, and go to state 24
+
+
+state 5
+
+   5) Expr : IfExpr _
+
+  $default      reduce using rule 5 (Expr)
+
+
+state 6
+
+   6) Expr : RelExpr _
+
+  $default      reduce using rule 6 (Expr)
+
+
+state 7
+
+   7) Expr : LetExpr _
+
+  $default      reduce using rule 7 (Expr)
+
+
+state 8
+
+   8) Expr : FunExpr _
+
+  $default      reduce using rule 8 (Expr)
+
+
+state 9
+
+   9) Expr : FixExpr _
+
+  $default      reduce using rule 9 (Expr)
+
+
+state 10
+
+  12) FunExpr : FUN _ IDENT ARROW Expr
+
+  IDENT         shift, and go to state 25
+
+
+state 11
+
+  13) RelExpr : ASExpr _ LT ASExpr
+  14) RelExpr : ASExpr _ GT ASExpr
+  15) RelExpr : ASExpr _
+  16) ASExpr : ASExpr _ PLUS MDExpr
+  17) ASExpr : ASExpr _ MINUS MDExpr
+
+  LT            shift, and go to state 26
+  GT            shift, and go to state 27
+  PLUS          shift, and go to state 28
+  MINUS         shift, and go to state 29
+  $default      reduce using rule 15 (RelExpr)
+
+
+state 12
+
+  18) ASExpr : MDExpr _
+  19) MDExpr : MDExpr _ MULT AppExpr
+  20) MDExpr : MDExpr _ DIV AppExpr
+
+  MULT          shift, and go to state 30
+  DIV           shift, and go to state 31
+  $default      reduce using rule 18 (ASExpr)
+
+
+state 13
+
+  21) MDExpr : AppExpr _
+  22) AppExpr : AppExpr _ AExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+  $default      reduce using rule 21 (MDExpr)
+
+  AExpr         go to state 32
+  boolean       go to state 18
+
+state 14
+
+  23) AppExpr : AExpr _
+
+  $default      reduce using rule 23 (AppExpr)
+
+
+state 15
+
+  24) IfExpr : IF _ Expr THEN Expr ELSE Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  Expr          go to state 35
+  boolean       go to state 18
+
+state 16
+
+  25) AExpr : LPAREN _ Expr RPAREN
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  Expr          go to state 36
+  boolean       go to state 18
+
+state 17
+
+  26) AExpr : NUMBER _
+
+  $default      reduce using rule 26 (AExpr)
+
+
+state 18
+
+  27) AExpr : boolean _
+
+  $default      reduce using rule 27 (AExpr)
+
+
+state 19
+
+  28) AExpr : IDENT _
+
+  $default      reduce using rule 28 (AExpr)
+
+
+state 20
+
+  29) boolean : TRUE _
+
+  $default      reduce using rule 29 (boolean)
+
+
+state 21
+
+  30) boolean : FALSE _
+
+  $default      reduce using rule 30 (boolean)
+
+
+state 22
+
+
+  $end          shift, and go to state 37
+
+
+state 23
+
+   3) target : LET IDENT _ EQ Expr
+  11) LetExpr : LET IDENT _ EQ Expr IN Expr
+
+  EQ            shift, and go to state 38
+
+
+state 24
+
+   4) target : FIX IDENT _ EQ FUN IDENT ARROW Expr
+  10) FixExpr : FIX IDENT _ EQ FUN IDENT ARROW Expr IN Expr
+
+  EQ            shift, and go to state 39
+
+
+state 25
+
+  12) FunExpr : FUN IDENT _ ARROW Expr
+
+  ARROW         shift, and go to state 40
+
+
+state 26
+
+  13) RelExpr : ASExpr LT _ ASExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  ASExpr        go to state 41
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 27
+
+  14) RelExpr : ASExpr GT _ ASExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  ASExpr        go to state 42
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 28
+
+  16) ASExpr : ASExpr PLUS _ MDExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  MDExpr        go to state 43
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 29
+
+  17) ASExpr : ASExpr MINUS _ MDExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  MDExpr        go to state 44
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 30
+
+  19) MDExpr : MDExpr MULT _ AppExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  AppExpr       go to state 45
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 31
+
+  20) MDExpr : MDExpr DIV _ AppExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  AppExpr       go to state 46
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 32
+
+  22) AppExpr : AppExpr AExpr _
+
+  $default      reduce using rule 22 (AppExpr)
+
+
+state 33
+
+  10) FixExpr : FIX _ IDENT EQ FUN IDENT ARROW Expr IN Expr
+
+  IDENT         shift, and go to state 47
+
+
+state 34
+
+  11) LetExpr : LET _ IDENT EQ Expr IN Expr
+
+  IDENT         shift, and go to state 48
+
+
+state 35
+
+  24) IfExpr : IF Expr _ THEN Expr ELSE Expr
+
+  THEN          shift, and go to state 49
+
+
+state 36
+
+  25) AExpr : LPAREN Expr _ RPAREN
+
+  RPAREN        shift, and go to state 50
+
+
+state 37
+
+
+  $default      accept
+
+
+state 38
+
+   3) target : LET IDENT EQ _ Expr
+  11) LetExpr : LET IDENT EQ _ Expr IN Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  Expr          go to state 51
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 39
+
+   4) target : FIX IDENT EQ _ FUN IDENT ARROW Expr
+  10) FixExpr : FIX IDENT EQ _ FUN IDENT ARROW Expr IN Expr
+
+  FUN           shift, and go to state 52
+
+
+state 40
+
+  12) FunExpr : FUN IDENT ARROW _ Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  Expr          go to state 53
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 41
+
+  13) RelExpr : ASExpr LT ASExpr _
+  16) ASExpr : ASExpr _ PLUS MDExpr
+  17) ASExpr : ASExpr _ MINUS MDExpr
+
+  PLUS          shift, and go to state 28
+  MINUS         shift, and go to state 29
+  $default      reduce using rule 13 (RelExpr)
+
+
+state 42
+
+  14) RelExpr : ASExpr GT ASExpr _
+  16) ASExpr : ASExpr _ PLUS MDExpr
+  17) ASExpr : ASExpr _ MINUS MDExpr
+
+  PLUS          shift, and go to state 28
+  MINUS         shift, and go to state 29
+  $default      reduce using rule 14 (RelExpr)
+
+
+state 43
+
+  16) ASExpr : ASExpr PLUS MDExpr _
+  19) MDExpr : MDExpr _ MULT AppExpr
+  20) MDExpr : MDExpr _ DIV AppExpr
+
+  MULT          shift, and go to state 30
+  DIV           shift, and go to state 31
+  $default      reduce using rule 16 (ASExpr)
+
+
+state 44
+
+  17) ASExpr : ASExpr MINUS MDExpr _
+  19) MDExpr : MDExpr _ MULT AppExpr
+  20) MDExpr : MDExpr _ DIV AppExpr
+
+  MULT          shift, and go to state 30
+  DIV           shift, and go to state 31
+  $default      reduce using rule 17 (ASExpr)
+
+
+state 45
+
+  19) MDExpr : MDExpr MULT AppExpr _
+  22) AppExpr : AppExpr _ AExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+  $default      reduce using rule 19 (MDExpr)
+
+  AExpr         go to state 32
+  boolean       go to state 18
+
+state 46
+
+  20) MDExpr : MDExpr DIV AppExpr _
+  22) AppExpr : AppExpr _ AExpr
+
+  IDENT         shift, and go to state 19
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+  $default      reduce using rule 20 (MDExpr)
+
+  AExpr         go to state 32
+  boolean       go to state 18
+
+state 47
+
+  10) FixExpr : FIX IDENT _ EQ FUN IDENT ARROW Expr IN Expr
+
+  EQ            shift, and go to state 54
+
+
+state 48
+
+  11) LetExpr : LET IDENT _ EQ Expr IN Expr
+
+  EQ            shift, and go to state 55
+
+
+state 49
+
+  24) IfExpr : IF Expr THEN _ Expr ELSE Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  Expr          go to state 56
+  boolean       go to state 18
+
+state 50
+
+  25) AExpr : LPAREN Expr RPAREN _
+
+  $default      reduce using rule 25 (AExpr)
+
+
+state 51
+
+   3) target : LET IDENT EQ Expr _
+  11) LetExpr : LET IDENT EQ Expr _ IN Expr
+
+  IN            shift, and go to state 57
+  $default      reduce using rule 3 (target)
+
+
+state 52
+
+   4) target : FIX IDENT EQ FUN _ IDENT ARROW Expr
+  10) FixExpr : FIX IDENT EQ FUN _ IDENT ARROW Expr IN Expr
+
+  IDENT         shift, and go to state 58
+
+
+state 53
+
+  12) FunExpr : FUN IDENT ARROW Expr _
+
+  $default      reduce using rule 12 (FunExpr)
+
+
+state 54
+
+  10) FixExpr : FIX IDENT EQ _ FUN IDENT ARROW Expr IN Expr
+
+  FUN           shift, and go to state 59
+
+
+state 55
+
+  11) LetExpr : LET IDENT EQ _ Expr IN Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  Expr          go to state 60
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 56
+
+  24) IfExpr : IF Expr THEN Expr _ ELSE Expr
+
+  ELSE          shift, and go to state 61
+
+
+state 57
+
+  11) LetExpr : LET IDENT EQ Expr IN _ Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  Expr          go to state 62
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 58
+
+   4) target : FIX IDENT EQ FUN IDENT _ ARROW Expr
+  10) FixExpr : FIX IDENT EQ FUN IDENT _ ARROW Expr IN Expr
+
+  ARROW         shift, and go to state 63
+
+
+state 59
+
+  10) FixExpr : FIX IDENT EQ FUN _ IDENT ARROW Expr IN Expr
+
+  IDENT         shift, and go to state 64
+
+
+state 60
+
+  11) LetExpr : LET IDENT EQ Expr _ IN Expr
+
+  IN            shift, and go to state 57
+
+
+state 61
+
+  24) IfExpr : IF Expr THEN Expr ELSE _ Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  Expr          go to state 65
+  boolean       go to state 18
+
+state 62
+
+  11) LetExpr : LET IDENT EQ Expr IN Expr _
+
+  $default      reduce using rule 11 (LetExpr)
+
+
+state 63
+
+   4) target : FIX IDENT EQ FUN IDENT ARROW _ Expr
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW _ Expr IN Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  Expr          go to state 66
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 64
+
+  10) FixExpr : FIX IDENT EQ FUN IDENT _ ARROW Expr IN Expr
+
+  ARROW         shift, and go to state 67
+
+
+state 65
+
+  24) IfExpr : IF Expr THEN Expr ELSE Expr _
+
+  $default      reduce using rule 24 (IfExpr)
+
+
+state 66
+
+   4) target : FIX IDENT EQ FUN IDENT ARROW Expr _
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW Expr _ IN Expr
+
+  IN            shift, and go to state 68
+  $default      reduce using rule 4 (target)
+
+
+state 67
+
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW _ Expr IN Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  Expr          go to state 69
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 68
+
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW Expr IN _ Expr
+
+  LET           shift, and go to state 34
+  IDENT         shift, and go to state 19
+  FIX           shift, and go to state 33
+  FUN           shift, and go to state 10
+  IF            shift, and go to state 15
+  LPAREN        shift, and go to state 16
+  NUMBER        shift, and go to state 17
+  TRUE          shift, and go to state 20
+  FALSE         shift, and go to state 21
+
+  IfExpr        go to state 5
+  RelExpr       go to state 6
+  LetExpr       go to state 7
+  FunExpr       go to state 8
+  FixExpr       go to state 9
+  Expr          go to state 70
+  ASExpr        go to state 11
+  MDExpr        go to state 12
+  AppExpr       go to state 13
+  AExpr         go to state 14
+  boolean       go to state 18
+
+state 69
+
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW Expr _ IN Expr
+
+  IN            shift, and go to state 68
+
+
+state 70
+
+  10) FixExpr : FIX IDENT EQ FUN IDENT ARROW Expr IN Expr _
+
+  $default      reduce using rule 10 (FixExpr)
+

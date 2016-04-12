@@ -1,0 +1,14 @@
+task :default => "parser.rb"
+
+file "parser.rb" => "parser.rb.y" do
+  puts "compiling parser.rb.y ..."
+  sh "racc -o parser.rb parser.rb.y"
+  sh "racc -v parser.rb.y"
+end
+
+task "default" => ["test"]
+
+task "test" do
+  #sh "ruby test/scannertest.rb"
+  sh "ruby test/typetest.rb"
+end
