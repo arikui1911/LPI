@@ -15,8 +15,9 @@ def repl(env,tyenv)
     newtyenv = ty[0]
     tystr = ty[1].display
 begin
-    tyvar = getFreshTyvar(ty[1]).uniq
-  if tyvar != []
+    tyvar = getFreshTyvar(ty[1]) 
+  if tyvar != [] && tyvar != nil
+    tyvar = tyvar.uniq
     tyalpha = ("a".."zzzz").take(tyvar.length).map do 
       |e| e = "'" + e
     end

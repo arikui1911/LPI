@@ -30,7 +30,6 @@ def assignType(subst,dest)
 end
 
 def substType(substs,type)
-	#p substs
 	case substs
 	when [],nil
 	  return type
@@ -97,16 +96,12 @@ def checkExp(exp,tyenv)
   case exp  
   when Symbol
   	x = exp
-  	ret = tyenv.assoc(x)[1]
-  	#puts "ret = #{ret.inspect}"
-	ty = ret.ty
+  	t = tyenv.assoc(x)
+  	if t == nil then raise "Not bounded" end
+  	ret = t[1]
+  	ty = ret.ty
 	vars = ret.tyvarls
 	s = vars ? vars.map{|id| [id,Tyvar.new(fresh)]} : vars
-=begin
-	puts "var = #{x}" 
-	puts "s = #{s}" 
-	puts "ty = #{ty}\n"
-=end
 	return [[],substType(s,ty)]
   when IntV
   	[[],Tyint.new]
@@ -132,8 +127,6 @@ def checkExp(exp,tyenv)
     id = exp.id; exp1 = exp.exp1; exp2 = exp.exp2
   	e1 = checkExp(exp1,tyenv)
   	scheme = closure(e1[1],tyenv,e1[0])
-  	#p scheme
-  	#newtyenv = [[id,e1[1]]] + tyenv
   	newtyenv = [[id,scheme]] + tyenv
   	e2 = checkExp(exp2,newtyenv)
   	eqs = eqsOfSubst(e1[0]) + eqsOfSubst(e2[0])
@@ -168,9 +161,15 @@ end
 
 def checkDecl(exp,tyenv)
 	case exp
-	when Exp 
+	when Exp,Symbol 
 		e = checkExp(exp,tyenv)
 		return [tyenv,e[1]]
-	else raise "error"
+	when Decl
+		id = exp.id 
+		e = exp.exp
+		expr = checkExp(e,tyenv)
+		newtyenv = [[id,tyscOf(expr[1])]] + tyenv
+		return [newtyenv, expr[1]]
+	else raise "error : #{exp}"
 	end
 end
